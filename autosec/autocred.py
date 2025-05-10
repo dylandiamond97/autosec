@@ -100,7 +100,7 @@ def cli_add(args):
 		set_creds(creds)
 
 def cli_update(args):
-	user = os.getlogin()
+	user = getpass.getuser()
 	key = get_key()
 	conf = dotenv_values(env)
 	creds = update_creds(user, conf, key, args)
@@ -108,7 +108,7 @@ def cli_update(args):
 		set_creds(creds)
 
 def cli_delete(args):
-	user = os.getlogin()
+	user = getpass.getuser()
 	conf = dotenv_values(env)
 	if delete_creds(user, conf, args):
 		print(f"Credential deleted.")
