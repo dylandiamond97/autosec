@@ -119,7 +119,7 @@ def cli_list():
 		print(f"\t{var} = \"{conf[var]}\"")
 
 def cli_init():
-	if "AUTOSEC_KEY" in os.environ:
+	if "AUTOCRED_KEY" in os.environ:
 		return "Environment already initialized."
 	else:
 		key = Fernet.generate_key().decode()
