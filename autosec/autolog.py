@@ -1,3 +1,9 @@
+"""
+autosec/autolog.py
+Contains functions for logging to an event collector for a SIEM solution. Or not.
+No CLI functionality provided yet.
+"""
+
 from logging import handlers
 import logging
 import sys

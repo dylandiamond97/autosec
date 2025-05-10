@@ -1,10 +1,12 @@
+"""
+CLI for autosec library.
+Each module will have its own CLI, functions named after module_cli pattern.
+"""
+
 import argparse
 from autosec import autocred, autolog
 
 def autocred_cli():
-	# parser = argparse.ArgumentParser(prog='autosec')
-	# subparsers = parser.add_subparsers(dest='command', required=True)
-
 	parser = argparse.ArgumentParser(prog='autocred')
 
 	# Main subcommand: 'autocred'
@@ -18,19 +20,6 @@ def autocred_cli():
 	group.add_argument('-i', '--init', action='store_true', help='Initialize autocred usage')
 
 	args = parser.parse_args()
-
-	# # Handle `autocred` command
-	# if args.command == 'autocred':
-	# 	if args.add:
-	# 		autocred.cli_add(args.add)
-	# 	elif args.update:
-	# 		autocred.cli_update(args.update)
-	# 	elif args.delete:
-	# 		autocred.cli_delete(args.delete)
-	# 	elif args.list:
-	# 		autocred.cli_list()
-	# 	elif args.init:
-	# 		autocred.cli_init()
 
 	# Handle the arguments
 	if args.add:

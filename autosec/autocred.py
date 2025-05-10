@@ -1,3 +1,9 @@
+"""
+autosec/autocred.py
+Contains functions for handling credentials for use in automation.
+Functions prefixed with "cli_" are intended for use by the command line interface.
+"""
+
 import os
 import getpass
 import time
