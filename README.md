@@ -7,25 +7,30 @@ Module utilized for local storage of credentials for use in automation scripts.
 Use CLI to create, update, and delete credentials to be read in scripts. 
 
 example call in python script:
-
+```python
 from autosec import autocred
 some_token = autocred.get_token('token_name')
-
+```
 example CLI usage:
+```python
 autocred -a token_name 
 autocred --add token_name
 autocred -u token_name
 autocred --update token_name
 autocred -d token_name
 autocred --delete token_name
-
+```
 # autolog
 Module utilized for building REST API integrations for on-prem SIEMs/event collectors and automation/script monitoring.
 
 example call in python script:
 
+```python
 from autosec import autolog
 import requests
+
+collector_IP = '10.10.10.10'
+collector_PORT = 111
 
 autolog.enable_exit_report(collectorip='10.10.10.10', collectorport=514)
 
@@ -50,5 +55,5 @@ for msg in some_api_response['response']:
 		collectorip=collector_IP,
 		collectorport=collector_PORT
 	)
-
+```
 This was fun. 
