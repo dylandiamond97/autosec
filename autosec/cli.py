@@ -1,60 +1,48 @@
 import argparse
-from autosec import autocred
+from autosec import autocred, autolog
 
 def main():
-	parser = argparse.ArgumentParser(prog='autosec')
-	subparsers = parser.add_subparsers(dest='command', required=True)
+	# parser = argparse.ArgumentParser(prog='autosec')
+	# subparsers = parser.add_subparsers(dest='command', required=True)
 
-	# Subcommand for 'autosec autocred --add <credname>'
-	# add_parser = subparsers.add_parser('autocred', help='Credential management commands')
-	# add_subparsers = add_parser.add_subparsers(dest='autocred_command')
-	# Add subcommands for 'update', 'add', 'delete', etc.
-	# add_subparsers.add_parser('update', help='Update credentials')
-	# add_subparsers.add_parser('add', help='Add new credentials')
-	# add_subparsers.add_parser('delete', help='Delete credentials')
-	# add_subparsers.add_parser('list', help='List credentials')
-	# add_subparsers.add_parser('init', help='Initialize autocred usage')
+	parser = argparse.ArgumentParser(prog='autocred')
 
 	# Main subcommand: 'autocred'
-	autocred_parser = subparsers.add_parser('autocred', help='Credential management commands')
-	group = autocred_parser.add_mutually_exclusive_group(required=True)
-	group.add_argument('--add', metavar='CRED', help='Add a new credential')
-	group.add_argument('--update', metavar='CRED', help='Update a credential')
-	group.add_argument('--delete', metavar='CRED', help='Delete a credential')
-	group.add_argument('--list', action='store_true', help='List all credentials')
-	group.add_argument('--init', action='store_true', help='Initialize autocred usage')
+	group = parser.add_mutually_exclusive_group(required=True)
+
+	# adding flags for commands
+	group.add_argument('-a', '--add', metavar='CRED', help='Add a new credential')
+	group.add_argument('-u', '--update', metavar='CRED', help='Update a credential')
+	group.add_argument('-d', '--delete', metavar='CRED', help='Delete a credential')
+	group.add_argument('-l', '--list', action='store_true', help='List all credentials')
+	group.add_argument('-i', '--init', action='store_true', help='Initialize autocred usage')
 
 	args = parser.parse_args()
 
-	# # Execute the correct subcommand
+	# # Handle `autocred` command
 	# if args.command == 'autocred':
-	# 	if args.autocred_command == 'update':
-	# 		credname = input('Enter the name of the credential to update: ')
-	# 		autocred.cli_update(credname)
-	# 	elif args.autocred_command == 'add':
-	# 		credname = input('Enter the name of the credential to add: ')
-	# 		autocred.cli_add(credname)
-	# 	elif args.autocred_command == 'delete':
-	# 		credname = input('Enter the name of the credential to delete: ')
-	# 		autocred.cli_delete(credname)
-	# 	elif args.autocred_command == 'list':
+	# 	if args.add:
+	# 		autocred.cli_add(args.add)
+	# 	elif args.update:
+	# 		autocred.cli_update(args.update)
+	# 	elif args.delete:
+	# 		autocred.cli_delete(args.delete)
+	# 	elif args.list:
 	# 		autocred.cli_list()
-	# 	elif args.autocred_command == 'init':
+	# 	elif args.init:
 	# 		autocred.cli_init()
-	# # Add more commands here as needed.
 
-	# Handle `autocred` command
-	if args.command == 'autocred':
-		if args.add:
-			autocred.cli_add(args.add)
-		elif args.update:
-			autocred.cli_update(args.update)
-		elif args.delete:
-			autocred.cli_delete(args.delete)
-		elif args.list:
-			autocred.cli_list()
-		elif args.init:
-			autocred.cli_init()
+	# Handle the arguments
+	if args.add:
+		autocred.cli_add(args.add)
+	elif args.update:
+		autocred.cli_update(args.update)
+	elif args.delete:
+		autocred.cli_delete(args.delete)
+	elif args.list:
+		autocred.cli_list()
+	elif args.init:
+		autocred.cli_init()
 
 if __name__ == '__main__':
 	main()
