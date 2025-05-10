@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "autosec"
-version = "0.1.0"
+version = "0.1.1"
 description = "A collection of utilities for security operations and automation."
 authors = [
     {name = "Dylan Diamond", email = "dylandiamond1997@outlook.com"}
@@ -20,3 +20,6 @@ dependencies = [
 
 [project.urls]
 "Homepage" = "https://github.com/dylandiamond97/Security-Automation-Utilities"
+
+[project.scripts]
+autosec = "autosec.cli:main"
