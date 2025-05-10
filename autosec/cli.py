@@ -1,7 +1,7 @@
 import argparse
 from autosec import autocred, autolog
 
-def main():
+def autocred():
 	# parser = argparse.ArgumentParser(prog='autosec')
 	# subparsers = parser.add_subparsers(dest='command', required=True)
 
