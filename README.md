@@ -1,10 +1,13 @@
-# Security-Automation-Utilities - autosec
+# autosec
 Python package intended to be used in a Security Operations Center for various repeated automation functions. 
+Written for Linux. Windows support coming _maybe_. Dunno if I want to punish myself that much or not. 
 
-# autocred
+# autosec/autocred
 Module utilized for local storage of credentials for use in automation scripts.
 
 Use CLI to create, update, and delete credentials to be read in scripts. 
+CLI must be initialized before use - stores encryption key in .bashrc, which must be sourced before use.
+Encrypted credentials are stored in a .env file in the user's home directory.
 
 example call in python script:
 ```python
@@ -12,7 +15,7 @@ from autosec import autocred
 some_token = autocred.get_token('token_name')
 ```
 example CLI usage:
-```python
+```bash
 autocred -a token_name 
 autocred --add token_name
 autocred -u token_name
@@ -20,7 +23,7 @@ autocred --update token_name
 autocred -d token_name
 autocred --delete token_name
 ```
-# autolog
+# autosec/autolog
 Module utilized for building REST API integrations for on-prem SIEMs/event collectors and automation/script monitoring.
 
 example call in python script:
@@ -56,4 +59,7 @@ for msg in some_api_response['response']:
 		collectorport=collector_PORT
 	)
 ```
+
+See also: [Sample Uses](./Sample%20Uses)
+
 This was fun. 
