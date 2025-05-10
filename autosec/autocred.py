@@ -26,7 +26,6 @@ def get_token(cred: str):
 	return cipher
 
 def add_creds(key: Fernet, conf: dict, cred_name):
-	to_write = {}
 	while conf.get(cred_name):
 		cred_name = input(f"Try again, {cred_name} already exists: (blank to quit)")
 		if not cred_name:
@@ -39,17 +38,16 @@ def add_creds(key: Fernet, conf: dict, cred_name):
 		validate = getpass.getpass(prompt="One more time for validation: ")
 
 	cipher = key.encrypt(temp.encode()).decode()
-	to_write[cred_name] = cipher
-	return to_write
+	conf[cred_name] = cipher
+	return conf
 
 def update_creds(user, conf: dict, key: Fernet, cred_name):
-	to_write = {}
 	while not conf.get(cred_name):
 		cred_name = input(f"Try again, {cred_name} does not exist: (blank to quit) ")
 		if cred_name.casefold() == "q":
 			return False
 
-	temp = getpass.getpass(prompt="Updated password: ")
+	temp = getpass.getpass(prompt="Updated value: ")
 	validate = getpass.getpass(prompt="One more time for validation: ")
 	# cipher = cryptocode.encrypt(temp, key)
 	cipher = key.encrypt(temp.encode()).decode()
@@ -57,16 +55,12 @@ def update_creds(user, conf: dict, key: Fernet, cred_name):
 		temp = getpass.getpass(prompt="Didn't match, try again: ")
 		validate = getpass.getpass(prompt="One more time for validation: ")
 		cipher = key.encrypt(temp.encode()).decode()
-		while cipher == conf[cred_name]:
-			temp = getpass.getpass(prompt="Cannot use old password, try again: ")
-			validate = getpass.getpass(prompt="One more time for validation: ")
-			cipher = key.encrypt(temp.encode()).decode()
 
 	with open(backup, 'a') as file:
 		file.write(f"{time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())}: {user} updated: {cred_name} = \"{conf[cred_name]}\"\n")
 
-	to_write[cred_name] = cipher
-	return to_write
+	conf[cred_name] = cipher
+	return conf
 
 def delete_creds(user, conf: dict, cred_name):
 	if not conf.get(cred_name):
@@ -87,10 +81,9 @@ def delete_creds(user, conf: dict, cred_name):
 	return True
 
 def set_creds(creds: dict):
-	with open(env, 'a') as file:
+	with open(env, 'w') as file:
 		for k in creds:
 			file.write(f"{k} = \"{creds[k]}\"\n")
-			print(f"{k} encrypted and written.")
 
 def cli_add(args):
 	key = get_key()
