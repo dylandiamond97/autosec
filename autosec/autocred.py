@@ -91,6 +91,14 @@ def set_creds(creds: dict):
 		for k in creds:
 			file.write(f"{k} = \"{creds[k]}\"\n")
 
+def validate_creds(cred_name: str):
+	stored_value = get_token(cred_name)
+	test_value = input("Enter credential value: ")
+	if stored_value != test_value:
+		print(f"Values do not match - please update {cred_name} by running \"autocred --update {cred_name}\" in terminal.")
+	else:
+		print(f"Values match, {cred_name} is valid.")
+
 def cli_add(args):
 	key = get_key()
 	conf = dotenv_values(env)
@@ -126,4 +134,9 @@ def cli_init():
 			file.write(f'\n# AUTOCRED ENC KEY\nexport AUTOCRED_KEY="{key}"\n')
 		os.system(f"source {bash_profile}")
 	print("autocred initialized successfully.")
+
+def cli_validate(cred_name):
+	key = get_key()
+	conf = dotenv_values(env)
+	validate_creds(cred_name)
 

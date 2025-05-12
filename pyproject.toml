@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "autosec"
-version = "1.0.0"
+version = "1.0.1"
 description = "A collection of utilities for security operations and automation."
 authors = [
     {name = "Dylan Diamond", email = "dylandiamond1997@outlook.com"}
@@ -23,3 +23,7 @@ dependencies = [
 
 [project.scripts]
 autocred = "autosec.cli:autocred_cli"
+
+[tool.setuptools.packages.find]
+include = ["autosec"]
+exclude = ["gitignore", "Sample Uses"]

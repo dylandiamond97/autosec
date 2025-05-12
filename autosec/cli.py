@@ -18,6 +18,7 @@ def autocred_cli():
 	group.add_argument('-d', '--delete', metavar='CRED', help='Delete a credential')
 	group.add_argument('-l', '--list', action='store_true', help='List all credentials')
 	group.add_argument('-i', '--init', action='store_true', help='Initialize autocred usage')
+	group.add_argument('-val', '--validate', metavar='CRED', help='Validate credential value')
 
 	args = parser.parse_args()
 
@@ -32,6 +33,8 @@ def autocred_cli():
 		autocred.cli_list()
 	elif args.init:
 		autocred.cli_init()
+	elif args.validate:
+		autocred.cli_validate(args.validate)
 
 if __name__ == '__main__':
 	autocred_cli()
