@@ -14,9 +14,9 @@ import os
 import time
 import json
 import socket
+from pathlib import Path
 
-# print(os.path.abspath(__file__))
-# print(inspect.stack())
+default_config_path = Path.home() / "/.autolog_config.json"
 
 def enable_exit_report(collectorip, collectorport: int=514):
 	""" Function that logs exit state for automation/script to an event collector for monitoring """
@@ -120,14 +120,14 @@ def can_connect(ip, port, timeout=3):
 def load_collector_config(add=False):
 	if not add:
 		try:
-			with open('/etc/autolog_config.json', 'r') as file:
+			with open(default_config_path, 'r') as file:
 				return json.load(file)
 		except FileNotFoundError:
 			print("No collector config file found, please run 'autolog --add <collector_name>' from the terminal to add a collector.")
 			return False
 	else:
 		try:
-			with open('/etc/autolog_config.json', 'r') as file:
+			with open(default_config_path, 'r') as file:
 				return json.load(file)
 		except FileNotFoundError:
 			return {}
@@ -157,14 +157,14 @@ def add_collector(collector_name):
 		return False
 	else:
 		collectors[collector_name] = {'ip': ip, 'port': port}
-		with open('/etc/autolog_config.json', 'w') as file:
+		with open(default_config_path, 'w') as file:
 			json.dump(collectors, file, indent=4)
 		return True
 
 def delete_collector(collector_name):
 	collectors = load_collector_config()
 	collectors.pop(collector_name)
-	with open('/etc/autolog_config.json', 'w') as file:
+	with open(default_config_path, 'w') as file:
 		json.dump(collectors, file, indent=4)
 	return True
 
@@ -194,7 +194,7 @@ def update_collector(collector_name):
 		return False
 	else:
 		collectors[collector_name] = {'ip': ip, 'port': port}
-		with open('/etc/autolog_config.json', 'w') as file:
+		with open(default_config_path, 'w') as file:
 			json.dump(collectors, file, indent=4)
 		return True
 
