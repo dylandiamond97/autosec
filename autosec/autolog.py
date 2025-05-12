@@ -200,7 +200,7 @@ def update_collector(collector_name):
 
 def set_collector(collector_name):
 	collectors = load_collector_config()
-	return collectors[collector_name]
+	return collectors[collector_name]['ip'], collectors[collector_name]['port']
 
 def cli_update_collector(collector_name):
 	update_collector(collector_name)
