@@ -117,13 +117,20 @@ def can_connect(ip, port, timeout=3):
 	except (socket.timeout, ConnectionRefusedError, OSError):
 		return False
 
-def load_collector_config():
-	try:
-		with open('/etc/autolog_config.json', 'r') as file:
-			return json.load(file)
-	except FileNotFoundError:
-		print("No collector config file found, please run 'autolog --add <collector_name>' from the terminal to add a collector.")
-		return False
+def load_collector_config(init=False):
+	if not init:
+		try:
+			with open('/etc/autolog_config.json', 'r') as file:
+				return json.load(file)
+		except FileNotFoundError:
+			print("No collector config file found, please run 'autolog --add <collector_name>' from the terminal to add a collector.")
+			return False
+	else:
+		try:
+			with open('/etc/autolog_config.json', 'r') as file:
+				return json.load(file)
+		except FileNotFoundError:
+			return {}
 
 def add_collector(collector_name):
 	collectors = load_collector_config()
