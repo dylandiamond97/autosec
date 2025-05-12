@@ -45,6 +45,7 @@ def autolog_cli():
 	# adding flags for commands
 	group.add_argument('-a', '--add', metavar='COLLECTOR', help='Add a new event collector')
 	group.add_argument('-d', '--delete', metavar='COLLECTOR', help='Delete an event collector')
+	group.add_argument('-u', '--update', metavar='COLLECTOR', help='Update an event collector')
 
 	args = parser.parse_args()
 
@@ -53,7 +54,8 @@ def autolog_cli():
 		autolog.cli_add_collector(args.add)
 	elif args.delete:
 		autolog.cli_delete_collector(args.delete)
-
+	elif args.update:
+		autolog.cli_update_collector(args.update)
 
 # if __name__ == '__main__':
 # 	autocred_cli()

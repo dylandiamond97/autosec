@@ -117,8 +117,8 @@ def can_connect(ip, port, timeout=3):
 	except (socket.timeout, ConnectionRefusedError, OSError):
 		return False
 
-def load_collector_config(init=False):
-	if not init:
+def load_collector_config(add=False):
+	if not add:
 		try:
 			with open('/etc/autolog_config.json', 'r') as file:
 				return json.load(file)
@@ -133,14 +133,17 @@ def load_collector_config(init=False):
 			return {}
 
 def add_collector(collector_name):
-	collectors = load_collector_config()
-
+	collectors = load_collector_config(add=True)
+	# Check if collector already exists
+	if collectors.get(collector_name):
+		print(f"Collector {collector_name} already exists.")
+		return False
+	# Get IP and port, validate
 	ip = input(f"Please enter {collector_name} IPv4: ")
 	while not is_valid_ip(ip):
 		ip = input(f"Invalid IP, please try again: (q to quit)")
 		if ip.casefold() == "q":
 			return False
-
 	port = input(f"Please enter {collector_name} port: ")
 	port = int(port)
 	while not is_valid_port(port):
@@ -148,11 +151,10 @@ def add_collector(collector_name):
 		if port.casefold() == "q":
 			return False
 		port = int(port)
-
+	# Check if can connect
 	if not can_connect(ip, port):
 		print(f"Unable to connect to {collector_name} at {ip}:{port}, please try again.")
 		return False
-
 	else:
 		collectors[collector_name] = {'ip': ip, 'port': port}
 		with open('/etc/autolog_config.json', 'w') as file:
@@ -166,9 +168,42 @@ def delete_collector(collector_name):
 		json.dump(collectors, file, indent=4)
 	return True
 
+def update_collector(collector_name):
+	collectors = load_collector_config()
+	# Check if collector exists
+	if not collectors.get(collector_name):
+		print(f"Collector {collector_name} does not exist.")
+		return False
+
+	# Get IP and port, validate
+	ip = input(f"Please enter {collector_name} IPv4: ")
+	while not is_valid_ip(ip):
+		ip = input(f"Invalid IP, please try again: (q to quit)")
+		if ip.casefold() == "q":
+			return False
+	port = input(f"Please enter {collector_name} port: ")
+	port = int(port)
+	while not is_valid_port(port):
+		port = input(f"Invalid port, please try again: (q to quit)")
+		if port.casefold() == "q":
+			return False
+		port = int(port)
+	# Check if can connect
+	if not can_connect(ip, port):
+		print(f"Unable to connect to {collector_name} at {ip}:{port}, please try again.")
+		return False
+	else:
+		collectors[collector_name] = {'ip': ip, 'port': port}
+		with open('/etc/autolog_config.json', 'w') as file:
+			json.dump(collectors, file, indent=4)
+		return True
+
 def set_collector(collector_name):
 	collectors = load_collector_config()
 	return collectors[collector_name]
+
+def cli_update_collector(collector_name):
+	update_collector(collector_name)
 
 def cli_add_collector(collector_name):
 	add_collector(collector_name)
