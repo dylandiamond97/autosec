@@ -16,7 +16,7 @@ import json
 import socket
 from pathlib import Path
 
-default_config_path = Path.home() / "/.autolog_config.json"
+default_config_path = Path.home() / ".autolog_config.json"
 
 def enable_exit_report(collectorip, collectorport: int=514):
 	""" Function that logs exit state for automation/script to an event collector for monitoring """
