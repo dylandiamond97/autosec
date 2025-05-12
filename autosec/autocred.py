@@ -93,9 +93,9 @@ def set_creds(creds: dict):
 
 def validate_creds(cred_name: str):
 	stored_value = get_token(cred_name)
-	test_value = input("Enter credential value: ")
+	test_value = getpass.getpass(prompt="Enter credential value: ")
 	if stored_value != test_value:
-		print(f"Values do not match - please update {cred_name} by running \"autocred --update {cred_name}\" in terminal.")
+		print(f"Values do not match, please update {cred_name} by running \"autocred --update {cred_name}\" in terminal.")
 	else:
 		print(f"Values match, {cred_name} is valid.")
 
