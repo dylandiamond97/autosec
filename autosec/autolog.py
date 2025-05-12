@@ -198,6 +198,11 @@ def update_collector(collector_name):
 			json.dump(collectors, file, indent=4)
 		return True
 
+def list_collectors():
+	collectors = load_collector_config()
+	for collector in collectors:
+		print(f"{collector} -  {collector['ip']}:{collector['port']}")
+
 def set_collector(collector_name):
 	collectors = load_collector_config()
 	return collectors[collector_name]['ip'], collectors[collector_name]['port']
