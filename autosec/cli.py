@@ -36,5 +36,24 @@ def autocred_cli():
 	elif args.validate:
 		autocred.cli_validate(args.validate)
 
-if __name__ == '__main__':
-	autocred_cli()
+def autolog_cli():
+	parser = argparse.ArgumentParser(prog='autolog')
+
+	# Main subcommand: 'autolog'
+	group = parser.add_mutually_exclusive_group(required=True)
+
+	# adding flags for commands
+	group.add_argument('-a', '--add', metavar='COLLECTOR', help='Add a new event collector')
+	group.add_argument('-d', '--delete', metavar='COLLECTOR', help='Delete an event collector')
+
+	args = parser.parse_args()
+
+	# Handle the arguments
+	if args.add:
+		autolog.cli_add_collector(args.add)
+	elif args.delete:
+		autolog.cli_delete_collector(args.delete)
+
+
+# if __name__ == '__main__':
+# 	autocred_cli()
