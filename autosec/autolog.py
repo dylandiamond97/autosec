@@ -25,7 +25,7 @@ def enable_exit_report(collectorip, collectorport: int=514):
 	def clean_exit(abs_filepath):
 		script = abs_filepath.split("/")[len(abs_filepath.split("/")) - 1]
 		leef_header = f"LEEF:1.0|SOC Automation|{abs_filepath}|1.0|Successful Execution|"
-		message = f"1 {time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime())} SOCAutomationMonitoring {leef_header}scriptName={script}"
+		message = f"1 {time.strftime('%Y-%m-%dT%H:%M:%SZ', time.localtime())} SOCAutomationMonitoring {leef_header}scriptName={script}"
 		syslog_to_collector(message, 'INFO', collectorip, collectorport)
 
 	# pre-formats message for crash syslog
