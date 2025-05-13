@@ -33,7 +33,7 @@ def enable_exit_report(collectorip, collectorport: int=514):
 		"""Generate generic info before crash"""
 		failing_script = abs_filepath.split("/")[len(abs_filepath.split("/")) - 1]
 		leef_header = f"LEEF:1.0|SOC Automation|{abs_filepath}|1.0|Unhandled Exception Failure|"
-		message = f"1 {time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime())} SOCAutomationMonitoring {leef_header}scriptName={failing_script}\t{frame_leef}"
+		message = f"1 {time.strftime('%Y-%m-%dT%H:%M:%SZ', time.localtime())} SOCAutomationMonitoring {leef_header}scriptName={failing_script}\t{frame_leef}"
 		return message
 
 	# logs to event collector automation crashes caused by unhandled exceptions
