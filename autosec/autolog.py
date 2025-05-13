@@ -129,6 +129,7 @@ def unique_collector(collector_info: list, update=None, add=False):
 		for info in collector_info:
 			print(info)
 			val = net_info.get(info)
+			print(val)
 			if val in seen[info]:
 				print(f"Duplicate {info} found for collector {collector}")
 				return False
