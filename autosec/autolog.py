@@ -160,13 +160,20 @@ def add_collector(collector_name):
 		ip = input(f"Invalid IP, please try again: (q to quit)")
 		if ip.casefold() == "q":
 			return False
-	port = input(f"Please enter {collector_name} port: ")
-	port = int(port)
-	while not is_valid_port(port):
-		port = input(f"Invalid port, please try again: (q to quit)")
+
+	while True:
+		port = input(f"Please enter {collector_name} port: ")
 		if port.casefold() == "q":
-			return False
-		port = int(port)
+			exit(1)
+		try:
+			port = int(port)
+			if is_valid_port(port):
+				break
+			else:
+				print("Port must be between 1 and 65535.")
+		except ValueError:
+			print(f"Enter integer.")
+
 	# Check if can connect
 	if not can_connect(ip, port):
 		print(f"Unable to connect to {collector_name} at {ip}:{port}, please try again.")
