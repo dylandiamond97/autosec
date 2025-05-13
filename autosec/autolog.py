@@ -235,5 +235,6 @@ def cli_delete_collector(collector_name):
 
 def cli_list_collectors():
 	collectors = load_collector_config()
+	print(type(collectors))
 	for collector in collectors:
 		print(f"{collector} -  {collector['ip']}:{collector['port']}")
