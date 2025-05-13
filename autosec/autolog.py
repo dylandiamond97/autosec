@@ -4,7 +4,6 @@ Contains functions for logging to an event collector for a SIEM solution. Or not
 No CLI functionality provided yet.
 """
 
-from logging import handlers
 import logging
 import sys
 import traceback
@@ -14,7 +13,9 @@ import os
 import time
 import json
 import socket
+import ipaddress
 from pathlib import Path
+from logging import handlers
 
 default_config_path = Path.home() / ".autolog_config.json"
 
@@ -102,9 +103,9 @@ def json_to_leef(json_obj: dict, vendor, product, version, event_id, sep='_'):
 
 def is_valid_ip(ip):
 	try:
-		socket.inet_aton(ip)  # raises if not valid IPv4
+		ipaddress.IPv4Address(ip)
 		return True
-	except socket.error:
+	except ipaddress.AddressValueError:
 		return False
 
 def is_valid_port(port):

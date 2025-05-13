@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "autosec"
-version = "1.0.14"
+version = "1.0.15"
 description = "A collection of utilities for security operations and automation."
 authors = [
     {name = "Dylan Diamond", email = "dylandiamond1997@outlook.com"}
