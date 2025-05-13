@@ -160,6 +160,7 @@ def add_collector(collector_name):
 		if ip.casefold() == "q":
 			return False
 	port = input(f"Please enter {collector_name} port: ")
+	port = int(port)
 	while not is_valid_port(port):
 		port = input(f"Invalid port, please try again: (q to quit)")
 		if port.casefold() == "q":
