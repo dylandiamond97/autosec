@@ -121,11 +121,13 @@ def can_connect(ip, port, timeout=3):
 def unique_collector(collector_info: list, update=None, add=False):
 	collectors = load_collector_config(add)
 	seen = {key: set() for key in collector_info}
-
+	print(seen)
 	for collector, net_info in collectors.items():
+		print(collector, net_info)
 		if collector == update:
 			continue
 		for info in collector_info:
+			print(info)
 			val = net_info.get(info)
 			if val in seen[info]:
 				print(f"Duplicate {info} found for collector {collector}")
@@ -242,4 +244,4 @@ def cli_delete_collector(collector_name):
 def cli_list_collectors():
 	collectors = load_collector_config()
 	for name, collector in collectors.items():
-		print(f"{name} -->\t{collector['ip']}:{collector['port']}")
+		print(f"{name} --> {collector['ip']}:{collector['port']}")
