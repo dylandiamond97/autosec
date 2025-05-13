@@ -118,8 +118,8 @@ def can_connect(ip, port, timeout=3):
 	except (socket.timeout, ConnectionRefusedError, OSError):
 		return False
 
-def unique_collector(collector_info: list, update=None):
-	collectors = load_collector_config()
+def unique_collector(collector_info: list, update=None, add=False):
+	collectors = load_collector_config(add)
 	seen = {key: set() for key in collector_info}
 
 	for collector, net_info in collectors.items():
@@ -178,7 +178,7 @@ def add_collector(collector_name):
 	if not can_connect(ip, port):
 		print(f"Unable to connect to {collector_name} at {ip}:{port}, please try again.")
 		return False
-	elif not unique_collector(['ip', 'port']):
+	elif not unique_collector(['ip', 'port'], add=True):
 		print(f"Duplicate IP or port found, please try again.")
 		return False
 	else:
