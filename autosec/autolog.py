@@ -134,6 +134,7 @@ def unique_collector(collector_info: list, update=None, add=False):
 				print(f"Duplicate {info} found for collector {collector}")
 				return False
 			seen[info].add(val)
+			print(seen)
 
 	return True
 
