@@ -2,7 +2,6 @@
 CLI for autosec library.
 Each module will have its own CLI, functions named after module_cli pattern.
 """
-
 import argparse
 from autosec import autocred, autolog
 
@@ -58,6 +57,5 @@ def autolog_cli():
 	elif args.update:
 		autolog.cli_update_collector(args.update)
 	elif args.list:
-		autolog.list_collectors()
-# if __name__ == '__main__':
-# 	autocred_cli()
+		autolog.cli_list_collectors()
+

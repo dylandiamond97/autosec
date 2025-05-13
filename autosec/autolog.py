@@ -117,6 +117,22 @@ def can_connect(ip, port, timeout=3):
 	except (socket.timeout, ConnectionRefusedError, OSError):
 		return False
 
+def unique_collector(collector_info: list, update=None):
+	collectors = load_collector_config()
+	seen = {key: set() for key in collector_info}
+
+	for collector, net_info in collectors.items():
+		if collector == update:
+			continue
+		for info in collector_info:
+			val = net_info.get(info)
+			if val in seen[info]:
+				print(f"Duplicate {info} found for collector {collector}")
+				return False
+			seen[info].add(val)
+
+	return True
+
 def load_collector_config(add=False):
 	if not add:
 		try:
@@ -155,6 +171,9 @@ def add_collector(collector_name):
 	if not can_connect(ip, port):
 		print(f"Unable to connect to {collector_name} at {ip}:{port}, please try again.")
 		return False
+	elif not unique_collector(['ip', 'port']):
+		print(f"Duplicate IP or port found, please try again.")
+		return False
 	else:
 		collectors[collector_name] = {'ip': ip, 'port': port}
 		with open(default_config_path, 'w') as file:
@@ -192,16 +211,14 @@ def update_collector(collector_name):
 	if not can_connect(ip, port):
 		print(f"Unable to connect to {collector_name} at {ip}:{port}, please try again.")
 		return False
+	elif not unique_collector(['ip', 'port'], update=collector_name):
+		print(f"Duplicate IP or port found for collector {collector_name}, please try again.")
+		return False
 	else:
 		collectors[collector_name] = {'ip': ip, 'port': port}
 		with open(default_config_path, 'w') as file:
 			json.dump(collectors, file, indent=4)
 		return True
-
-def list_collectors():
-	collectors = load_collector_config()
-	for collector in collectors:
-		print(f"{collector} -  {collector['ip']}:{collector['port']}")
 
 def set_collector(collector_name):
 	collectors = load_collector_config()
@@ -216,3 +233,7 @@ def cli_add_collector(collector_name):
 def cli_delete_collector(collector_name):
 	delete_collector(collector_name)
 
+def cli_list_collectors():
+	collectors = load_collector_config()
+	for collector in collectors:
+		print(f"{collector} -  {collector['ip']}:{collector['port']}")
