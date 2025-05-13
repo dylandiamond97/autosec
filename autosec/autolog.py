@@ -139,8 +139,7 @@ def load_collector_config(add=False):
 			with open(default_config_path, 'r') as file:
 				return json.load(file)
 		except FileNotFoundError:
-			print("No collector config file found, please run 'autolog --add <collector_name>' from the terminal to add a collector.")
-			return False
+			raise FileNotFoundError("No collector config file found, please run 'autolog --add <collector_name>' from the terminal to add a collector.")
 	else:
 		try:
 			with open(default_config_path, 'r') as file:
@@ -161,7 +160,6 @@ def add_collector(collector_name):
 		if ip.casefold() == "q":
 			return False
 	port = input(f"Please enter {collector_name} port: ")
-	port = int(port)
 	while not is_valid_port(port):
 		port = input(f"Invalid port, please try again: (q to quit)")
 		if port.casefold() == "q":
@@ -176,7 +174,7 @@ def add_collector(collector_name):
 		return False
 	else:
 		collectors[collector_name] = {'ip': ip, 'port': port}
-		with open(default_config_path, 'w') as file:
+		with open(default_config_path, 'w+') as file:
 			json.dump(collectors, file, indent=4)
 		return True
 
@@ -201,7 +199,6 @@ def update_collector(collector_name):
 		if ip.casefold() == "q":
 			return False
 	port = input(f"Please enter {collector_name} port: ")
-	port = int(port)
 	while not is_valid_port(port):
 		port = input(f"Invalid port, please try again: (q to quit)")
 		if port.casefold() == "q":
@@ -236,4 +233,4 @@ def cli_delete_collector(collector_name):
 def cli_list_collectors():
 	collectors = load_collector_config()
 	for name, collector in collectors.items():
-		print(f"{name} -  {collector['ip']}:{collector['port']}")
+		print(f"{name} -->\t{collector['ip']}:{collector['port']}")
