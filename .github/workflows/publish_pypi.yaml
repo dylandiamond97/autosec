@@ -12,8 +12,8 @@ permissions:
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
-    environment:
-      name: pypi         # Must match the environment name registered on PyPI
+#    environment:
+#      name: pypi         # Must match the environment name registered on PyPI
 
     steps:
       - name: Check out code
