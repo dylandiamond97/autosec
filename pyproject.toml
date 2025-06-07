@@ -31,3 +31,4 @@ autolog = "autosec.cli:autolog_cli"
 [tool.setuptools.packages.find]
 include = ["autosec"]
 exclude = ["gitignore", "Sample Uses"]
+
