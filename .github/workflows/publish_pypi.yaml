@@ -6,36 +6,36 @@ on:
       - main
 
 permissions:
-  id-token: write       # Required for OIDC auth to PyPI
-  contents: read        # Required to checkout code
+  contents: write        # needed to push tags
+  id-token: write        # OIDC token for PyPI auth
+  packages: write        # publish packages
 
 jobs:
-  build-and-publish:
+  release:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # full history required for version detection
+          fetch-depth: 0  # full git history needed for version calculation
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
-      - name: Install Poetry and dependencies
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install poetry poetry-dynamic-versioning
+          pip install poetry
+          pip install python-semantic-release
 
       - name: Install project dependencies
         run: poetry install --no-interaction --no-ansi
 
-      - name: Build package
-        run: poetry build
-
-      - name: Publish to PyPI
+      - name: Run semantic-release
         env:
           PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
-        run: poetry publish --no-interaction --username __token__ --password $PYPI_TOKEN
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: semantic-release publish
