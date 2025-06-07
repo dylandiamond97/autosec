@@ -26,10 +26,12 @@ build-backend = "setuptools.build_meta"
 version_toml = ["pyproject.toml:project.version"]
 build_command = "python -m pip install build && python -m build --sdist --wheel ."
 commit_parser = "conventional"
-version_source = "commmits"
+version_source = "commits"
 upload_to_pypi = true
 upload_to_pypi_repository = "pypi"
 
 [tool.semantic_release.commit_parser_options]
 minor_tags = ['feat', 'minor']
 patch_tags = ['fix', 'patch', 'chore', 'typo', 'docs', 'refactor', 'bug']
+parse_squash_commits = true
+ignore_merge_commits = true
