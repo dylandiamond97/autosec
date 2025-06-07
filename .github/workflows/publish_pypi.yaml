@@ -101,7 +101,7 @@ jobs:
     # separate out the deploy step from the publish step to prevent reversing release if error
     runs-on: ubuntu-latest
     needs: release
-    if: ${{ needs.release.outputs.released == 'true' }}
+#    if: ${{ needs.release.outputs.released == 'true' }}
 
     permissions:
       contents: read
