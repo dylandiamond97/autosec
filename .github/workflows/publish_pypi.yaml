@@ -6,37 +6,110 @@ on:
       - main
 
 permissions:
-  contents: write        # needed to push tags
-  id-token: write        # OIDC token for PyPI auth
-  packages: write        # publish packages
+  contents: read
 
 jobs:
   release:
     runs-on: ubuntu-latest
+    environment:
+      name: pypi
+    concurrency:
+      group: ${{ github.workflow }}-release-${{ github.ref_name }}
+      cancel-in-progress: false
+
+    permissions:
+      contents: write
 
     steps:
-      - name: Checkout code
+      # checkout branch triggering workflow, validate branch is current during workflow run
+      # prevents possible race conditions/publishing unvalidated commits
+      - name: Setup | Checkout Repository on Release Branch
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # full git history needed for version calculation
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-
-      - name: Install dependencies
+      - name: Setup | Force release branch to be at workflow sha
         run: |
-          python -m pip install --upgrade pip
-          pip install poetry
-          pip install python-semantic-release
+          git reset --hard ${{ github.sha }}
 
-      - name: Install project dependencies
-        run: poetry install --no-interaction --no-ansi
+      - name: Evaluate | Verify upstream matches
+        # Final abort point if upstream has changed
+        shell: bash
+        run: |
+          set +o pipefail
 
-      - name: Run semantic-release
-        env:
-          PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: semantic-release -vv publish
+          UPSTREAM_BRANCH_NAME="$(git status -sb | head -n 1 | cut -d' ' -f2 | grep -E '\.{3}' | cut -d'.' -f4)"
+          printf '%s\n' "Upstream branch name: $UPSTREAM_BRANCH_NAME"
+
+          set -o pipefail
+
+          if [ -z "$UPSTREAM_BRANCH_NAME" ]; then
+              printf >&2 '%s\n' "::error::Unable to determine upstream branch name!"
+              exit 1
+          fi
+
+          git fetch "${UPSTREAM_BRANCH_NAME%%/*}"
+
+          if ! UPSTREAM_SHA="$(git rev-parse "$UPSTREAM_BRANCH_NAME")"; then
+              printf >&2 '%s\n' "::error::Unable to determine upstream branch sha!"
+              exit 1
+          fi
+
+          HEAD_SHA="$(git rev-parse HEAD)"
+
+          if [ "$HEAD_SHA" != "$UPSTREAM_SHA" ]; then
+              printf >&2 '%s\n' "[HEAD SHA] $HEAD_SHA != $UPSTREAM_SHA [UPSTREAM SHA]"
+              printf >&2 '%s\n' "::error::Upstream has changed, aborting release..."
+              exit 1
+          fi
+
+          printf '%s\n' "Verified upstream branch has not changed, continuing with release..."
+
+      - name: Action | Semantic Version Release
+        id: release
+        # Adjust tag with desired version if applicable.
+        uses: python-semantic-release/python-semantic-release@v10.0.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          git_committer_name: "github-actions"
+          git_committer_email: "actions@users.noreply.github.com"
+
+      - name: Publish | Upload to GitHub Release Assets
+        uses: python-semantic-release/publish-action@v10.0.2
+        if: steps.release.outputs.released == 'true'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ steps.release.outputs.tag }}
+
+      - name: Upload | Distribution Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: distribution-artifacts
+          path: dist
+          if-no-files-found: error
+
+  deploy:
+    # separate out the deploy step from the publish step to prevent reversing release if error
+    runs-on: ubuntu-latest
+    needs: release
+    if: ${{ needs.release.outputs.released == 'true' }}
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Setup | Download Build Artifacts
+        uses: actions/download-artifact@v4
+        id: artifact-download
+        with:
+          name: distribution-artifacts
+          path: dist
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist
+          print-hash: true
+          verbose: true
