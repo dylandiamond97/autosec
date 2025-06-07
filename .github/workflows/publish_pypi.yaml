@@ -100,7 +100,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pypi
-#    needs: release
+    needs: release
 #    if: ${{ needs.release.outputs.released == 'true' }}
 
     permissions:
