@@ -121,7 +121,7 @@ def can_connect(ip, port, timeout=3):
 def unique_collector(collector_info: list, update=None, add=False):
 	collectors = load_collector_config(add)
 	seen = {key: set() for key in collector_info}
-	print(seen)
+
 	for collector, net_info in collectors.items():
 		print(collector, net_info)
 		if collector == update:

@@ -10,7 +10,7 @@ authors = [
     {name = "Dylan Diamond", email = "dylandiamond1997@outlook.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.6"
+requires-python = ">=3.11"
 dependencies = [
     "cryptography",
     "python-dotenv",
@@ -19,7 +19,7 @@ dependencies = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/dylandiamond97/Security-Automation-Utilities"
+"Homepage" = "https://github.com/dylandiamond97/autosec"
 
 [project.scripts]
 autocred = "autosec.cli:autocred_cli"
