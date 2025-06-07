@@ -18,11 +18,61 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Required to fetch all tags
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '>=3.11'
+
+      - name: Verify bump tag exists
+        id: bump_tag
+        run: |
+          TAG=$(git tag --points-at $GITHUB_SHA | grep -E '^(patch|minor|major)$' || true)
+          if [ -z "$TAG" ]; then
+            echo "Commit must be tagged with patch, minor, or major."
+            exit 1
+          fi
+          echo "Detected bump tag: $TAG"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+
+      - name: Get current version
+        id: current_version
+        run: |
+          git fetch --tags
+          VERSION=$(git tag --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -n 1 | sed 's/^v//')
+          echo "Current version: $VERSION"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Bump version
+        id: bumped_version
+        run: |
+          IFS='.' read -r MAJOR MINOR PATCH <<< "${{ steps.current_version.outputs.version }}"
+          case "${{ steps.bump_tag.outputs.tag }}" in
+            patch)
+              PATCH=$((PATCH + 1))
+              ;;
+            minor)
+              MINOR=$((MINOR + 1))
+              PATCH=0
+              ;;
+            major)
+              MAJOR=$((MAJOR + 1))
+              MINOR=0
+              PATCH=0
+              ;;
+          esac
+          NEW_VERSION="v$MAJOR.$MINOR.$PATCH"
+          echo "New version: $NEW_VERSION"
+          echo "new_tag=$NEW_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create new version tag
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git tag ${{ steps.bumped_version.outputs.new_tag }}
+          git push origin ${{ steps.bumped_version.outputs.new_tag }}
 
       - name: Install build tools
         run: |
