@@ -1,6 +1,6 @@
 [project]
 name = "autosec"
-version = "2.1.0"
+version = "2.1.1"
 description = "A collection of utilities for security operations and automation."
 authors = [
 	{ name = "Dylan Diamond", email = "dylandiamond1997@outlook.com" }
