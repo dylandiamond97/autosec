@@ -2,6 +2,15 @@
 
 <!-- version list -->
 
+## v2.1.1 (2025-06-07)
+
+### Bug Fixes
+
+- Removed dependency install from workflow, since python-semantic runs in its own docker container
+  during the workflow. If it breaks I'll just add it back.
+  ([`ce2d4cf`](https://github.com/dylandiamond97/autosec/commit/ce2d4cf2b925a098030ab2d0cfb24577fdd48c82))
+
+
 ## v2.1.0 (2025-06-07)
 
 ### Features
