@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "autosec"
-version = "1.0.22"
+version = "1.0.21"
 description = "A collection of utilities for security operations and automation."
 authors = ["Dylan Diamond <dylandiamond1997@outlook.com>"]
 readme = "README.md"
