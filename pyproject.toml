@@ -1,32 +1,29 @@
-[tool.poetry]
+[project]
 name = "autosec"
 version = "1.0.21"
 description = "A collection of utilities for security operations and automation."
-authors = ["Dylan Diamond <dylandiamond1997@outlook.com>"]
+authors = [
+	{ name = "Dylan Diamond", email = "dylandiamond1997@outlook.com" }
+]
 readme = "README.md"
-homepage = "https://github.com/dylandiamond97/autosec"
-packages = [{ include = "autosec" }]
+requires-python = ">=3.11"
+dependencies = [
+	"cryptography",
+	"python-dotenv",
+	"requests"
+]
 
-[tool.poetry.dependencies]
-python = ">=3.11"
-cryptography = "*"
-python-dotenv = "*"
-requests = "*"
-
-[tool.poetry.dev-dependencies]
-python-semantic-release = "^10.0.2"
-build = "^1.2.1"
-
-[tool.poetry.scripts]
+[project.scripts]
 autocred = "autosec.cli:autocred_cli"
 autolog = "autosec.cli:autolog_cli"
 
 [build-system]
-requires = ["poetry-core>=1.4.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
 
 [tool.semantic_release]
-version_toml = ["pyproject.toml:tool.poetry.version"]
+version_toml = ["pyproject.toml:project.version"]
 build_command = "python -m build --sdist --wheel ."
 commit_parser = "conventional"
 version_source = "commmits"
@@ -36,5 +33,5 @@ upload_to_pypi_repository = "pypi"
 [tool.semantic_release.commit_parser_options]
 minor_tags = ['feat', 'minor']
 patch_tags = ['fix', 'patch', 'chore', 'typo', 'docs', 'refactor', 'bug']
-parse_squash_commits = true
+# parse_squash_commits = true
 ignore_merge_commits = true
