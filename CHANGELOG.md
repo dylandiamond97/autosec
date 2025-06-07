@@ -2,6 +2,17 @@
 
 <!-- version list -->
 
+## v2.1.0 (2025-06-07)
+
+### Features
+
+- This is more complicated than it should be
+  ([`c1a0168`](https://github.com/dylandiamond97/autosec/commit/c1a0168ad89c3c079181f602c5100ae603694424))
+
+- Updated workflow, can't run concurrently.
+  ([`ccf35bf`](https://github.com/dylandiamond97/autosec/commit/ccf35bf6b44bdf0d888c449e9d8ed47638f76f92))
+
+
 ## v2.0.2 (2025-06-07)
 
 
