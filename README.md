@@ -16,7 +16,7 @@ Additionally, credentials stored on the app server are never visible between cli
 referenced in automation scripts.
 
 Client A Plain Credentials (not stored) + socapp1 DEK -> Client A Cipher Credentials (stored)\
-Client B Plain Credentials (not stored) + socapp1 DEK -> Cliebt B Cipher Credentials (stored)
+Client B Plain Credentials (not stored) + socapp1 DEK -> Client B Cipher Credentials (stored)
 
 Really, I just got tired of manually encrypting API tokens, constantly loading an entire .env file to get access to
 those credentials, and then hardcoding different collector info everytime I wanted to send a log, yada yada yada. 
