@@ -25,6 +25,6 @@ requires = ["poetry-core>=1.4.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.semantic_release]
-version_source = "commmit"
+version_source = "commmits"
 upload_to_pypi = true
 upload_to_pypi_repository = "pypi"
