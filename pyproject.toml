@@ -26,4 +26,4 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry-dynamic-versioning]
 enable = true
-version-source = "commit"  # Use commit messages to control version bumps
+strip_local_version = true
