@@ -5,7 +5,6 @@ authors = ["Dylan Diamond <dylandiamond1997@outlook.com>"]
 readme = "README.md"
 homepage = "https://github.com/dylandiamond97/autosec"
 packages = [{ include = "autosec" }]
-python = ">=3.11"
 
 [tool.poetry.dependencies]
 python = ">=3.11"
