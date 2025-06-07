@@ -1,34 +1,29 @@
-[build-system]
-requires = ["setuptools>=42", "python-semantic-release>=10.0.1","wheel", "setuptools_scm"]
-build-backend = "setuptools.build_meta"
-
-[tool.setuptools_scm]
-version_scheme = "post-release"
-local_scheme = "no-local-version"
-
-[project]
+[tool.poetry]
 name = "autosec"
 description = "A collection of utilities for security operations and automation."
-authors = [
-    {name = "Dylan Diamond", email = "dylandiamond1997@outlook.com"}
-]
+authors = ["Dylan Diamond <dylandiamond1997@outlook.com>"]
 readme = "README.md"
-requires-python = ">=3.11"
-dependencies = [
-    "cryptography",
-    "python-dotenv",
-    "requests"
+homepage = "https://github.com/dylandiamond97/autosec"
+packages = [{ include = "autosec" }]
+python = ">=3.11"
 
-]
+[tool.poetry.dependencies]
+python = ">=3.11"
+cryptography = "*"
+python-dotenv = "*"
+requests = "*"
 
-[project.urls]
-"Homepage" = "https://github.com/dylandiamond97/autosec"
-
-[project.scripts]
+[tool.poetry.scripts]
 autocred = "autosec.cli:autocred_cli"
 autolog = "autosec.cli:autolog_cli"
 
-[tool.setuptools.packages.find]
-include = ["autosec"]
-exclude = ["gitignore", "Sample Uses"]
+[build-system]
+requires = ["poetry-core>=1.4.0"]
+build-backend = "poetry.core.masonry.api"
 
+[tool.poetry.plugins."poetry-plugin"]
+"dynamic-versioning" = "poetry_dynamic_versioning"
+
+[tool.poetry-dynamic-versioning]
+enable = true
+version-source = "commit"  # Use commit messages to control version bumps
