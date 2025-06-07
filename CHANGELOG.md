@@ -2,6 +2,15 @@
 
 <!-- version list -->
 
+## v2.0.1 (2025-06-07)
+
+### Bug Fixes
+
+- This commit parser can really get on my nerves. This should hopefully fix my bs issue. if removing
+  custom patch tag is the issue I'm going to fight.
+  ([`0b43c14`](https://github.com/dylandiamond97/autosec/commit/0b43c14b79e9bf2b7b69a713405f55949aebc09e))
+
+
 ## v2.0.0 (2025-06-07)
 
 ### Bug Fixes
