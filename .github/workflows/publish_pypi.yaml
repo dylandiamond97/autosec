@@ -34,7 +34,7 @@ jobs:
       - name: Run semantic release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+          PYPI_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
         run: semantic-release publish
 
 #      - name: Build package
