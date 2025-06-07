@@ -35,3 +35,4 @@ minor_tags = ['feat', 'minor']
 patch_tags = ['fix', 'patch', 'chore', 'typo', 'docs', 'refactor', 'bug']
 parse_squash_commits = true
 ignore_merge_commits = true
+
