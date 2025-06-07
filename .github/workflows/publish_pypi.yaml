@@ -38,4 +38,5 @@ jobs:
         env:
           PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: semantic-release -vv publish
