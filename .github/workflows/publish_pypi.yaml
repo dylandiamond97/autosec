@@ -35,9 +35,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install build twine python-semantic-release
 
-      - name: Install project dependencies
-        run: poetry install --no-interaction --no-ansi
-
       - name: Setup | Force release branch to be at workflow sha
         run: |
           git reset --hard ${{ github.sha }}
