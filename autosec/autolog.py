@@ -24,16 +24,16 @@ def enable_exit_report(collectorip, collectorport: int=514):
 	# logs to event collector on clean exit with no unhandled exceptions
 	def clean_exit(abs_filepath):
 		script = abs_filepath.split("/")[len(abs_filepath.split("/")) - 1]
-		leef_header = f"LEEF:1.0|SOC Automation|{abs_filepath}|1.0|Successful Execution|"
-		message = f"1 {time.strftime('%Y-%m-%dT%H:%M:%SZ', time.localtime())} SOCAutomationMonitoring {leef_header}scriptName={script}"
+		leef_header = f"LEEF:1.0|autosec|{abs_filepath}|1.0|Successful Execution|"
+		message = f"1 {time.strftime('%Y-%m-%dT%H:%M:%SZ', time.localtime())} autosec_exit_report {leef_header}scriptName={script}"
 		syslog_to_collector(message, 'INFO', collectorip, collectorport)
 
 	# pre-formats message for crash syslog
 	def crash_exit_syslog(abs_filepath, frame_leef):
 		"""Generate generic info before crash"""
 		failing_script = abs_filepath.split("/")[len(abs_filepath.split("/")) - 1]
-		leef_header = f"LEEF:1.0|SOC Automation|{abs_filepath}|1.0|Unhandled Exception Failure|"
-		message = f"1 {time.strftime('%Y-%m-%dT%H:%M:%SZ', time.localtime())} SOCAutomationMonitoring {leef_header}scriptName={failing_script}\t{frame_leef}"
+		leef_header = f"LEEF:1.0|autosec|{abs_filepath}|1.0|Unhandled Exception Failure|"
+		message = f"1 {time.strftime('%Y-%m-%dT%H:%M:%SZ', time.localtime())} autosec_exit_report {leef_header}scriptName={failing_script}\t{frame_leef}"
 		return message
 
 	# logs to event collector automation crashes caused by unhandled exceptions
@@ -58,7 +58,7 @@ def enable_exit_report(collectorip, collectorport: int=514):
 	stack = inspect.stack()
 	for frame in stack:
 		filename = frame.filename
-		if 'site-packages' not in filename and 'soc_utils' not in filename:
+		if 'site-packages' not in filename and 'autosec' not in filename:
 			script_path = os.path.abspath(filename)
 			script_frame_leef = "\t".join(f"{k}={v}" for k, v in frame.__dict__.items())
 			break
@@ -135,7 +135,6 @@ def unique_collector(collector_info: list, update=None, add=False):
 				return False
 			seen[info].add(val)
 			print(seen)
-
 	return True
 
 def load_collector_config(add=False):
