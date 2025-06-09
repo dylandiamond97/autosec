@@ -3,7 +3,7 @@ CLI for autosec library.
 Each module will have its own CLI, functions named after module_cli pattern.
 """
 import argparse
-from autosec import autocred, autolog
+from . import autocred, autolog
 
 def autocred_cli():
 	parser = argparse.ArgumentParser(prog='autocred')

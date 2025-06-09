@@ -12,12 +12,15 @@ import inspect
 import os
 import time
 import json
+import yaml
 import socket
 import ipaddress
 from pathlib import Path
 from logging import handlers
+from . import config
 
-default_config_path = Path.home() / ".autolog_config.json"
+# default_config_path = Path.home() / ".autolog_config.json" # to be replaced by config.py/get_conf or something
+default_config_path = config.get_autolog_config()
 
 def enable_exit_report(collectorip, collectorport: int=514):
 	""" Function that logs exit state for automation/script to an event collector for monitoring """
@@ -118,6 +121,20 @@ def can_connect(ip, port, timeout=3):
 	except (socket.timeout, ConnectionRefusedError, OSError):
 		return False
 
+def load_collector_config(add=False):
+	if not add:
+		try:
+			with open(default_config_path, 'r') as file:
+				return json.load(file)
+		except FileNotFoundError:
+			raise FileNotFoundError("No collector config file found, please run 'autolog --add <collector_name>' from the terminal to add a collector.")
+	else:
+		try:
+			with open(default_config_path, 'r') as file:
+				return json.load(file)
+		except FileNotFoundError:
+			return {}
+
 def unique_collector(collector_info: list, update=None, add=False):
 	collectors = load_collector_config(add)
 	seen = {key: set() for key in collector_info}
@@ -136,20 +153,6 @@ def unique_collector(collector_info: list, update=None, add=False):
 			seen[info].add(val)
 			print(seen)
 	return True
-
-def load_collector_config(add=False):
-	if not add:
-		try:
-			with open(default_config_path, 'r') as file:
-				return json.load(file)
-		except FileNotFoundError:
-			raise FileNotFoundError("No collector config file found, please run 'autolog --add <collector_name>' from the terminal to add a collector.")
-	else:
-		try:
-			with open(default_config_path, 'r') as file:
-				return json.load(file)
-		except FileNotFoundError:
-			return {}
 
 def add_collector(collector_name):
 	collectors = load_collector_config(add=True)

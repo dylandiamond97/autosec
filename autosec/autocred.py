@@ -10,6 +10,7 @@ import time
 from cryptography.fernet import Fernet
 from pathlib import Path
 from dotenv import dotenv_values
+from . import config
 
 home_dir = str(Path.home())
 env = Path.home() / ".env"
